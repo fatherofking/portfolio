@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Website Build System™ — Personal Brand Growth Architect</title>
+  <meta name="description" content="Productized Website Build System™ — done-for-you websites, conversion audits, and growth-ready funnels for creators & affiliate marketers." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --emerald: #00B58A; /* primary accent */
+      --amber: #FFB95C;   /* spare accent */
+      --bg-top: #2A2A2A;  /* hero start */
+      --bg-bottom: #1E1E1E;/* page background */
+      --card: #262626;    /* surfaces */
+      --text: #FFFFFF;    /* heading */
+      --muted: rgba(255,255,255,0.78); /* body */
+      --muted-dim: rgba(255,255,255,0.65);
+      --border: rgba(255,255,255,0.10);
+      --radius:14px;
+      --max-width:1200px;
+      --transition: all .48s cubic-bezier(.2,.9,.2,1);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+    .container-xl{max-width:var(--max-width);padding:48px 20px}
+
+    /* Header */
+    header{position:fixed;left:0;right:0;top:0;z-index:1200;background:linear-gradient(180deg, rgba(30,30,30,0.92), rgba(30,30,30,0.6));backdrop-filter: blur(4px);border-bottom:1px solid var(--border)}
+    .brand{font-family:Poppins,Inter}
+    header .nav-link{color:var(--muted);font-weight:600}
+    header .nav-link:hover{color:var(--text)}
+
+    /* Hero */
+    .hero{min-height:84vh;display:flex;align-items:center;padding-top:26px}
+    .hero-left{max-width:720px}
+    .eyebrow{color:var(--muted-dim);font-weight:600;letter-spacing:0.6px}
+    h1{font-family:Poppins;font-size:clamp(2.4rem,5.8vw,3.8rem);line-height:1.02;margin:12px 0;color:var(--text)}
+    .lead{color:var(--muted-dim);font-size:1.02rem;max-width:64ch;line-height:1.7}
+    .headline-clip{color:var(--text);font-weight:800}
+
+    .mockup{width:100%;max-width:520px;margin-left:auto;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,0.04);box-shadow:0 8px 24px rgba(0,0,0,0.18)}
+    .mockup video{width:100%;display:block;border-radius:10px}
+
+    /* Buttons — flat minimal */
+    .btn-primary{background:var(--emerald);border:none;border-radius:12px;padding:12px 20px;font-weight:700;color:#07110C;transition:var(--transition)}
+    .btn-primary:hover{background:#00946E}
+    .btn-ghost{border:1px solid rgba(255,255,255,0.06);background:transparent;border-radius:12px;padding:10px 18px;transition:var(--transition);color:var(--muted)}
+
+    section{padding:56px 0}
+    h2.section-title{font-family:Poppins;margin-bottom:8px;font-size:1.25rem;position:relative;padding-bottom:10px}
+    h2.section-title::after{content:'';position:absolute;left:0;bottom:0;width:44px;height:3px;background:var(--emerald);border-radius:4px;opacity:.95}
+    p.section-lead{color:var(--muted-dim);max-width:70ch}
+
+    /* Problem cards */
+    .problem-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+    .problem{background:var(--card);padding:18px;border-radius:12px;border:1px solid var(--border)}
+
+    /* Process */
+    .process{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+    @media(max-width:991px){.process{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:575px){.process{grid-template-columns:1fr}}
+    .process-card{padding:18px;border-radius:12px;background:var(--card);border:1px solid var(--border)}
+
+    /* Portfolio */
+    .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    @media(max-width:991px){.portfolio-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:575px){.portfolio-grid{grid-template-columns:1fr}}
+    .project{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--border);background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));box-shadow:0 8px 24px rgba(0,0,0,0.15)}
+    .project img{width:100%;height:220px;object-fit:cover;display:block}
+    .project .meta{padding:14px}
+    .project .title{font-weight:800}
+    .project .desc{color:var(--muted-dim);font-size:.95rem;margin-top:8px;line-height:1.6}
+    .metrics{display:flex;gap:10px;margin-top:12px}
+    .metric{background:transparent;padding:8px 10px;border-radius:10px;font-weight:700;color:var(--emerald);font-size:.9rem;border:1px solid rgba(255,255,255,0.04)}
+
+    .overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.22), rgba(0,0,0,0.36));opacity:0;transform:translateY(8px);transition:var(--transition);display:flex;align-items:flex-end}
+    .project:hover .overlay{opacity:1;transform:none}
+    .overlay .cta{padding:18px}
+
+    .testimonial{background:var(--card);padding:18px;border-radius:12px;border:1px solid var(--border);color:var(--muted)}
+
+    /* Audit */
+    .audit-card{background:var(--card);padding:18px;border-radius:12px;border:1px solid var(--border)}
+    .audit-result{background:transparent;border-radius:10px;padding:14px;margin-top:12px;border:1px dashed rgba(255,255,255,0.04);color:var(--muted-dim)}
+
+    footer{padding:36px 0;color:var(--muted);border-top:1px solid var(--border)}
+
+    /* Animations */
+    .fade-up{opacity:0;transform:translateY(12px) scale(.995);transition: all .5s cubic-bezier(.2,.9,.2,1)}
+    .in-view{opacity:1;transform:none}
+
+    /* form */
+    .apply-card{background:var(--card);padding:18px;border-radius:12px;border:1px solid var(--border)}
+
+    /* Accessibility */
+    :focus{outline:none}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container-xl d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center gap-3">
+        <div class="brand d-flex align-items-center gap-3">
+          <div style="width:48px;height:48px;border-radius:12px;background:var(--emerald);display:flex;align-items:center;justify-content:center;font-weight:800;font-family:Poppins;color:#07110C">PB</div>
+          <div>
+            <div style="font-weight:800">Eugene praise</div>
+            <div style="font-size:.78rem;color:var(--muted-dim);margin-top:3px">Website Build System™</div>
+          </div>
+        </div>
+      </div>
+      <nav class="d-none d-lg-flex align-items-center gap-3">
+        <a class="nav-link" href="#why">Why</a>
+        <a class="nav-link" href="#system">System</a>
+        <a class="nav-link" href="#results">Results</a>
+        <a class="nav-link" href="#audit">Audit</a>
+        <a class="btn btn-sm btn-primary" href="#apply">Start My Build</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container-xl">
+    <!-- HERO -->
+    <section class="hero row align-items-center gy-4">
+      <div class="col-lg-7 hero-left">
+        <div class="eyebrow">Productized website builds for creators & affiliates</div>
+        <h1>Turn Your Online Presence Into <span class="headline-clip">Profit</span>.</h1>
+        <p class="lead">I build conversion-first websites and systems that turn followers into clients and clicks into revenue — no fluff, no wasted tools.</p>
+
+        <div class="d-flex gap-3 mt-4">
+          <a class="btn btn-primary btn-lg" href="#apply">Start My Website Build</a>
+          <a class="btn btn-ghost btn-lg" href="#results">See Client Results</a>
+        </div>
+
+        <div class="mt-5 process-grid">
+          <div class="process-card d-flex align-items-start gap-3">
+            <div style="width:44px;height:44px;border-radius:10px;background:transparent;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--emerald);border:1px solid rgba(255,255,255,0.04)">1</div>
+            <div>
+              <div style="font-weight:800;font-family:Poppins">Brand Clarity</div>
+              <div class="text-muted small">We define your message, offer, and ideal client.</div>
+            </div>
+          </div>
+          <div class="process-card d-flex align-items-start gap-3">
+            <div style="width:44px;height:44px;border-radius:10px;background:transparent;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--emerald);border:1px solid rgba(255,255,255,0.04)">2</div>
+            <div>
+              <div style="font-weight:800;font-family:Poppins">Design & Build</div>
+              <div class="text-muted small">Conversion-first pages crafted for your offer.</div>
+            </div>
+          </div>
+          <div class="process-card d-flex align-items-start gap-3">
+            <div style="width:44px;height:44px;border-radius:10px;background:transparent;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--emerald);border:1px solid rgba(255,255,255,0.04)">3</div>
+            <div>
+              <div style="font-weight:800;font-family:Poppins">Automation</div>
+              <div class="text-muted small">Email sequences, funnels, and analytics — set & tested.</div>
+            </div>
+          </div>
+          <div class="process-card d-flex align-items-start gap-3">
+            <div style="width:44px;height:44px;border-radius:10px;background:transparent;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--emerald);border:1px solid rgba(255,255,255,0.04)">4</div>
+            <div>
+              <div style="font-weight:800;font-family:Poppins">Launch & Growth</div>
+              <div class="text-muted small">Handover + growth playbook to scale fast.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-lg-5">
+        <div class="mockup">
+          <div class="screen">
+            <video autoplay muted loop playsinline>
+              <source src="https://cdn.glitch.global/placeholder/demo-loop.mp4" type="video/mp4">
+              <img src="https://images.unsplash.com/photo-1526378721882-62b2c3b0f6d4?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="dashboard mockup" />
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY -->
+    <section id="why" class="fade-up">
+      <h2 class="section-title">Pretty Doesn’t Pay the Bills.</h2>
+      <p class="section-lead">Most personal brand websites are polished brochure pages — but they don’t convert visitors into clients. You need a system that attracts the right people and turns them into paying customers.</p>
+
+      <div class="problem-grid mt-3">
+        <div class="problem">
+          <div style="font-weight:800">Design Without Direction</div>
+          <div class="text-muted small">Beautiful pages that don’t communicate a clear offer or next step.</div>
+        </div>
+        <div class="problem">
+          <div style="font-weight:800">Traffic, No Strategy</div>
+          <div class="text-muted small">Visitors come — but nothing is set up to convert them consistently.</div>
+        </div>
+        <div class="problem">
+          <div style="font-weight:800">No Automation</div>
+          <div class="text-muted small">Leads aren’t nurtured or monetized — opportunities get lost.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;font-weight:700">Tagline: It’s not about having a website — it’s about owning a digital system that sells.</div>
+    </section>
+
+    <!-- SYSTEM -->
+    <section id="system" class="fade-up">
+      <h2 class="section-title">Website Build System™</h2>
+      <p class="section-lead">A productized, repeatable process that takes you from brand clarity to a live, revenue-ready website.</p>
+
+      <div class="process mt-3">
+        <div class="process-card">
+          <div style="font-weight:800">Brand Clarity Session</div>
+          <div class="text-muted small mt-2">We map your positioning, offer, and target client so every page converts.</div>
+        </div>
+        <div class="process-card">
+          <div style="font-weight:800">Conversion-Ready Design</div>
+          <div class="text-muted small mt-2">Landing pages, funnels, and checkout flows optimized to sell.</div>
+        </div>
+        <div class="process-card">
+          <div style="font-weight:800">Automation Setup</div>
+          <div class="text-muted small mt-2">Email sequences, tags, and funnel triggers — tested and live.</div>
+        </div>
+        <div class="process-card">
+          <div style="font-weight:800">Launch & Growth Playbook</div>
+          <div class="text-muted small mt-2">Roadmap to scale, plus CRO recommendations and tracking.</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RESULTS -->
+    <section id="results" class="fade-up">
+      <h2 class="section-title">Real Brands. Real Growth.</h2>
+      <p class="section-lead">Selected outcomes from recent builds — focused on measurable business results.</p>
+
+      <div class="portfolio-grid mt-4">
+        <div class="project">
+          <img src="https://images.unsplash.com/photo-1505685296765-3a2736de412f?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Affiliate Funnel Overhaul">
+          <div class="meta">
+            <div class="title">Affiliate Funnel Overhaul</div>
+            <div class="desc">Rewrote funnel messaging — result: +210% email signups & 3x affiliate clicks in 30 days.</div>
+            <div class="metrics mt-2"><div class="metric">+210% signups</div><div class="metric">3x clicks</div></div>
+          </div>
+          <div class="overlay">
+            <div class="cta">
+              <a class="btn btn-primary" href="#apply">Start My Build</a>
+              <a class="btn btn-ghost ms-2" href="#">See Case Study</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project">
+          <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Creator Membership Launch">
+          <div class="meta">
+            <div class="title">Creator Membership Launch</div>
+            <div class="desc">Built membership funnel — $12k MRR within 60 days of launch.</div>
+            <div class="metrics mt-2"><div class="metric">$12k MRR</div><div class="metric">60 days</div></div>
+          </div>
+          <div class="overlay">
+            <div class="cta">
+              <a class="btn btn-primary" href="#apply">Start My Build</a>
+              <a class="btn btn-ghost ms-2" href="#">See Case Study</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project">
+          <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1400&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Course Launch System">
+          <div class="meta">
+            <div class="title">Course Launch System</div>
+            <div class="desc">Landing page, checkout, and onboarding — sold out first cohort in 7 days.</div>
+            <div class="metrics mt-2"><div class="metric">Sold out</div><div class="metric">7 days</div></div>
+          </div>
+          <div class="overlay">
+            <div class="cta">
+              <a class="btn btn-primary" href="#apply">Start My Build</a>
+              <a class="btn btn-ghost ms-2" href="#">See Case Study</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- AUDIT -->
+    <section id="audit" class="fade-up">
+      <h2 class="section-title">Website Worthiness Test</h2>
+      <p class="section-lead">Not sure if your current site is helping or hurting your growth? Submit a site and I’ll run a professional audit — I highlight conversion gaps, technical issues, and quick wins.</p>
+
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="audit-card">
+            <form id="auditForm">
+              <div class="mb-2"><label class="form-label">Website URL</label>
+                <input name="site" type="url" class="form-control" placeholder="https://yourwebsite.com" required></div>
+              <div class="mb-2"><label class="form-label">Primary goal</label>
+                <select name="goal" class="form-select">
+                  <option value="leads">Generate leads</option>
+                  <option value="sales">Direct sales</option>
+                  <option value="audience">Build audience</option>
+                  <option value="other">Other</option>
+                </select></div>
+              <div class="mb-2"><label class="form-label">Email (so I can send results)</label>
+                <input name="email" type="email" class="form-control" placeholder="you@yourdomain.com" required></div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary" type="submit">Request Audit</button>
+                <button id="auditWhatsApp" type="button" class="btn btn-ghost">Request via WhatsApp</button>
+              </div>
+            </form>
+            <div id="auditFeedback" class="audit-result sr-only" aria-live="polite"></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div style="font-weight:800">What you get</div>
+          <ul class="text-muted small mt-2">
+            <li>Conversion-focused audit covering messaging, CTA clarity, and funnel gaps.</li>
+            <li>Technical checklist: load speed, forms, and mobile usability (manual + automated tools).</li>
+            <li>Quick-win plan: prioritized fixes you can implement fast.</li>
+          </ul>
+
+          <div class="mt-4 testimonial">"The audit exposed 3 quick fixes that doubled our email opt-in rate." — Client</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APPLY / CTA -->
+    <section id="apply" class="fade-up">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-6">
+          <h2 class="section-title">Start Your Website Build</h2>
+          <p class="section-lead">Ready to stop guessing and start building a website that actually converts? Apply below — I review every request to keep builds focused and high-quality.</p>
+
+          <div class="apply-card mt-3">
+            <form id="applyForm" class="row g-2">
+              <div class="col-12">
+                <input name="name" class="form-control" placeholder="Your full name" required />
+              </div>
+              <div class="col-12">
+                <input name="email" type="email" class="form-control" placeholder="Email" required />
+              </div>
+              <div class="col-12">
+                <input name="website" class="form-control" placeholder="Current website (if any)" />
+              </div>
+              <div class="col-12">
+                <select name="budget" class="form-select" required>
+                  <option value="">Select budget range</option>
+                  <option value="3k-6k">$3k–$6k</option>
+                  <option value="6k-12k">$6k–$12k</option>
+                  <option value="12k+">$12k+</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <textarea name="message" class="form-control" rows="3" placeholder="Short description of your offer & goals (1–2 sentences)"></textarea>
+              </div>
+              <div class="col-12 d-flex gap-2">
+                <button class="btn btn-primary" type="submit">Apply to Build</button>
+                <button id="whatsappApply" type="button" class="btn btn-ghost">Apply via WhatsApp</button>
+              </div>
+            </form>
+            <div id="applyFeedback" class="audit-result sr-only" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div style="font-weight:800">What you get</div>
+          <ul class="text-muted small mt-2">
+            <li>Full website (landing, about, offers, lead magnet) — designed to convert.</li>
+            <li>Email & funnel automation set up and tested.</li>
+            <li>Launch checklist + growth playbook.</li>
+            <li>Editable files and a 30-day support window after launch.</li>
+          </ul>
+
+          <div class="mt-4 testimonial">"We handed over our messy funnel. Within 30 days we had a clean system — and 3x the leads." — Client</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT / TRUST -->
+    <section class="fade-up">
+      <h2 class="section-title">Why Work With Me</h2>
+      <p class="section-lead">I combine strategy, copy, and automation into one repeatable build. Clients get a productized experience with measurable outcomes — not a one-off brochure site.</p>
+
+      <div class="d-flex gap-3 mt-3 flex-wrap">
+        <div class="badge" style="background:rgba(255,255,255,0.02);padding:10px 14px;border-radius:10px;border:1px solid var(--border)">Featured in: Surrogate father 1</div>
+        <div class="badge" style="background:rgba(255,255,255,0.02);padding:10px 14px;border-radius:10px;border:1px solid var(--border)">Worked with: Surrogate father</div>
+      </div>
+    </section>
+
+    <footer class="fade-up">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div style="font-weight:800">Eugene praise</div>
+          <div class="text-muted small">Website Build System™</div>
+        </div>
+        <div class="text-muted small">Some links are affiliate links — I only recommend tools I personally use.</div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      // rotating hero word
+      try{
+        const heroWords = ['Profit','Clients','Leads','Customers'];
+        let hIdx = 0;
+        const headlineEl = document.querySelector('.headline-clip');
+        if(headlineEl){
+          setInterval(()=>{ hIdx = (hIdx+1)%heroWords.length; headlineEl.textContent = heroWords[hIdx]; },3000);
+        }
+      }catch(e){console.warn(e)}
+
+      // intersection observer for reveal
+      try{
+        const io = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in-view'); }); },{threshold:0.12});
+        document.querySelectorAll('.fade-up').forEach(n=>io.observe(n));
+      }catch(e){console.warn(e)}
+
+      // --- CONFIG: Google Apps Script endpoint (paste your /exec URL here) ---
+      const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwjRI-c0NyGze7EXOF2yoKgKd2GnB4ObOEgZh7YTmLUFjpoUL8W8IwfRD2YtSOQWxACeg/exec';
+
+      // Helper: show feedback
+      function showFeedback(el, message, success=true){
+        if(!el) return alert(message);
+        el.classList.remove('sr-only');
+        el.style.borderStyle = success ? 'dashed' : 'solid';
+        el.style.color = success ? 'var(--muted-dim)' : '#FFB3A1';
+        el.textContent = message;
+        setTimeout(()=>{ el.classList.add('sr-only'); },7000);
+      }
+
+      // FORM: Apply to Build -> submits to Google Sheets
+      try{
+        const applyForm = document.getElementById('applyForm');
+        const applyFeedback = document.getElementById('applyFeedback');
+        if(applyForm){
+          applyForm.addEventListener('submit', async (e)=>{
+            e.preventDefault();
+            const fm = new FormData(e.target);
+            const payload = {
+              type: 'application',
+              name: fm.get('name') || '',
+              email: fm.get('email') || '',
+              website: fm.get('website') || '',
+              budget: fm.get('budget') || '',
+              message: fm.get('message') || '',
+              source: window.location.href,
+              ts: new Date().toISOString()
+            };
+
+            try{
+              await fetch(SHEETS_ENDPOINT, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+              applyForm.reset();
+              showFeedback(applyFeedback,'✅ Thanks — your application was submitted. Expect a reply within 48 hours.');
+            }catch(err){
+              console.error('Apply submit failed',err);
+              showFeedback(applyFeedback,'⚠️ Submission failed. Please try WhatsApp as an alternative.',false);
+            }
+          });
+        }
+      }catch(e){console.warn(e)}
+
+      // FORM: Audit -> submits to Google Sheets and returns immediate client-side checks
+      try{
+        const auditForm = document.getElementById('auditForm');
+        const auditFeedback = document.getElementById('auditFeedback');
+        if(auditForm){
+          auditForm.addEventListener('submit', async (e)=>{
+            e.preventDefault();
+            const fm = new FormData(e.target);
+            const site = (fm.get('site')||'').trim();
+            const email = fm.get('email')||'';
+            const goal = fm.get('goal')||'';
+            if(!site) return showFeedback(auditFeedback,'Please enter a valid site URL.',false);
+
+            // Basic client-side checks
+            const checks = [];
+            try{
+              const urlOK = /^https?:\/\/.+/i.test(site);
+              checks.push({label:'Valid URL',ok:urlOK,note: urlOK ? 'ok' : 'use https://'});
+              const usesHTTPS = site.startsWith('https://');
+              checks.push({label:'Uses HTTPS',ok:usesHTTPS,note: usesHTTPS ? 'secure' : 'not secure — recommend HTTPS'});
+            }catch(err){checks.push({label:'URL parse',ok:false,note:'invalid URL'})}
+
+            // Send request to Google Sheet (audit request)
+            const payload = {
+              type: 'audit',
+              site, email, goal, source: window.location.href, ts: new Date().toISOString()
+            };
+            try{
+              await fetch(SHEETS_ENDPOINT, {method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+            }catch(err){ console.warn('Audit sheet submit err',err); }
+
+            // Show user the quick checks and next steps
+            const summary = checks.map(c=> `${c.label}: ${c.ok ? '✅' : '⚠️'} — ${c.note}`).join('\n');
+            showFeedback(auditFeedback, 'Quick checks:\n' + summary + '\n\nThanks — your audit request is received. I will run a full audit and email the findings.');
+            auditForm.reset();
+          });
+        }
+
+      }catch(e){console.warn(e)}
+
+      // WhatsApp buttons (apply + audit)
+      try{
+        const whatsappNumber = '2348012345678'; // replace with your international number without +
+        const whatsappApply = document.getElementById('whatsappApply');
+        const auditWhatsApp = document.getElementById('auditWhatsApp');
+        if(whatsappApply){ whatsappApply.addEventListener('click', ()=>{ const text = encodeURIComponent("Hi, I'm ready to start my Website Build. My name: [Your name]. Brief: "); window.open(`https://wa.me/${whatsappNumber}?text=${text}`,'_blank'); }); }
+        if(auditWhatsApp){ auditWhatsApp.addEventListener('click', ()=>{ const text = encodeURIComponent("Hi, I'd like a Website Worthiness Test. My site: "); window.open(`https://wa.me/${whatsappNumber}?text=${text}`,'_blank'); }); }
+      }catch(e){console.warn(e)}
+
+      // Smooth anchor scroll with header offset
+      try{
+        const header = document.querySelector('header');
+        const headerOffset = header ? header.offsetHeight + 12 : 24;
+        document.querySelectorAll('a[href^="#"]').forEach(a=>{ a.addEventListener('click',(ev)=>{ const href = a.getAttribute('href'); if(href.length>1){ const target = document.querySelector(href); if(target){ ev.preventDefault(); const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset; window.scrollTo({top,behavior:'smooth'}); } } }); });
+      }catch(e){console.warn(e)}
+
+    });
+  </script>
+</body>
+</html>
+
+
+
